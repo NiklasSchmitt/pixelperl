@@ -30,6 +30,6 @@ jobs:
         run: echo Hello, world!
       
       - name: install perlcritic
-        run: sudo apt-get update && sudo apt-get install -y perlcritic
+        run: sudo apt-get update && sudo apt-get install -y libtest-perl-critic-perl
       - name: critic
         run: cd $GITHUB_WORKSPACE && perlcritic -3 .
