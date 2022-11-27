@@ -29,5 +29,7 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
       
-      - name: perl critic
-        run: apt update && apt install -y perlcritic && perlcritic -3 .
+      - name: install perlcritic
+        run: sudo apt-get install -y perlcritic
+      - name: critic
+        run: cd $GITHUB_WORKSPACE && perlcritic -3 .
