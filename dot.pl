@@ -23,9 +23,9 @@ print "== x: $max_x | y: $max_y == \n";
 
 
 while ($client->connected()) {
-	for (my $x = 0; $x <= $max_x; $x=($x+5)) {
-		for (my $y = 0; $y <= $max_y; $y=($y+5)) {
-			$client->send("PX $x $y 29cf1d\n");
+	for (my $x = 0; $x <= $max_x; $x=($x+3)) {
+		for (my $y = 0; $y <= $max_y; $y=($y+3)) {
+			$client->send("PX $x $y 02f553\n");
 		}
 	}
 	print STDERR ".";

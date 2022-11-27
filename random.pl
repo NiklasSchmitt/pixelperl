@@ -45,7 +45,8 @@ while ($client->connected()) {
 			$client->send("PX $x $height $color\n");
 		}
 	}
-	print STDERR ".";
+	# print STDERR ".";
+	# sleep(0.2);
 }
 
 $client->close();
