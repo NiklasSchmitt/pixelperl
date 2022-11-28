@@ -1,2 +1,2 @@
-# pixelpearl
-a simple &amp; basic pixelflut-client written in perl
+# pixelperl
+a summary of simple &amp; basic pixelflut-clients written in perl.
