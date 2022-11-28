@@ -31,5 +31,7 @@ jobs:
       
       - name: install perlcritic
         run: sudo apt-get update && sudo apt-get install -y libtest-perl-critic-perl
-      - name: run perlcritic
-        run: perlcritic -3 .
+      - name: run perlcritic (level 5)
+        run: perlcritic -5 .
+      - name: run perlcritic (level 4)
+        run: perlcritic -4 .
