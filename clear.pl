@@ -6,8 +6,6 @@ use warnings;
 use lib ".";
 use Pixel;
 
-no warnings qw(redefine);
-
 my $server = shift;
 my $port = shift;
 
