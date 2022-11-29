@@ -1,31 +1,37 @@
-#!/usr/bin/perl
+#!/bin/perl
 
 use strict;
 use warnings;
+use Data::Dumper;
+use IO::Socket::INET;
 
-use lib ".";
-use Pixel;
-
-no warnings qw(redefine);
-
-my $server = shift;
+my $ip = shift;
 my $port = shift;
 
-die "no ip:port given!" if !$server || !$port;
+my $color = shift;
 
-my $PP = Pixel->new($server,$port);
+my $client = IO::Socket::INET->new(
+    # where to connect
+    PeerAddr => $ip,
+    PeerPort => $port,
+) or die "failed to connect!";
 
-sub Pixel::loop_content {
-	my $self = shift;
-	my $max_y = $self->{'max_y'};
-	my $max_x = $self->{'max_x'};
-	my $client = $self->{'socket'};
+
+my $size;
+$client->send("SIZE\n");
+$client->recv($size,1024);
+my ($max_x,$max_y) = $size =~/^SIZE (\d+) (\d+)/;
+print "== x: $max_x | y: $max_y == \n";
+
+
+
+while ($client->connected()) {
 
 	my $dice = int(rand(40)); # top to bottom?
 	my $cr = int(rand(255));
 	my $cg = int(rand(255));
 	my $cb = int(rand(255));
-	my $color = Pixel::rgb2hex($cr,$cg,$cb);
+	$color = rgb2hex($cr,$cg,$cb);
 
 	if ($dice >= 0 && $dice <=10) {
 		# top to bottom
@@ -34,7 +40,7 @@ sub Pixel::loop_content {
 				$client->send("PX $x $y $color\n");
 			}
 		}
-	} elsif ($dice >= 10 && $dice <= 20) {
+	} elsif($dice >= 10 && $dice <= 20) {
 		# bottom to top
 		for (my $y = $max_y; $y > 0; $y--) {
 			for (my $x = $max_x; $x > 0; $x--) {
@@ -58,6 +64,12 @@ sub Pixel::loop_content {
 	}
 	# sleep(5);
 	print STDERR ".";
+}
 
-	return 1;
+$client->close();
+
+sub rgb2hex {
+    my ($r, $g, $b,) = @_;
+
+    return sprintf("%02lx%02lx%02lx", $r, $g, $b);
 }
