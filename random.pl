@@ -8,10 +8,11 @@ use Pixel;
 
 my $server = shift;
 my $port = shift;
+my $forks = shift || 1;
 
 die "no ip:port given!" if !$server || !$port;
 
-my $PP = Pixel->new($server,$port);
+my $PP = Pixel->new($server,$port,$forks);
 
 sub Pixel::loop_content {
 	my $self = shift;
@@ -41,8 +42,8 @@ sub Pixel::loop_content {
 		}
 	}
 
-	# sleep(5);
-	print STDERR ".";
+	# sleep();
+	# print STDERR ".";
 
 	return 1;
 }

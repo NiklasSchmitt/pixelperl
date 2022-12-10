@@ -14,8 +14,16 @@ sub new {
 
     $self->{'ip'} = shift;
     $self->{'port'} = shift;
+    $self->{'forks'} = shift || 0;
+    $self->{'parent'} = $$;
+	my @forks;
 
-	print STDERR "Connecting to $self->{'ip'}:$self->{'port'}\n";
+	if ($self->{'forks'} > 1) {
+		for (my $i = 0; $i <= ($self->{'forks'} - 1); $i++) {
+			push @forks, fork() if $$ eq $self->{'parent'};
+		}
+	}
+	print STDERR "$$ - Connecting to $self->{'ip'}:$self->{'port'}\n";
 
 	my $socket = IO::Socket::INET->new(
 	    # where to connect
@@ -28,7 +36,7 @@ sub new {
 	$socket->send("SIZE\n");
 	$socket->recv($size,1024);
 	my ($max_x,$max_y) = $size =~/^SIZE (\d+) (\d+)/;
-	print STDERR "Connected. Size: x=$max_x | y=$max_y\n----------\n";
+	print STDERR "$$ - Connected. Size: x=$max_x | y=$max_y\n----------\n";
 	
 	$self->{'max_x'} = $max_x;
 	$self->{'max_y'} = $max_y;

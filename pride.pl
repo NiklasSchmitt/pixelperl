@@ -11,10 +11,13 @@ my $port = shift;
 
 die "no ip:port given!" if !$server || !$port;
 
+
 my $start = shift || 50;
 my $height = 30;
 
-my $PP = Pixel->new($server,$port);
+my $forks = shift || 1;
+
+my $PP = Pixel->new($server,$port,$forks);
 
 sub Pixel::loop_content {
 	my $self = shift;
