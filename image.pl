@@ -31,7 +31,7 @@ for (my $x = 0; $x <= $width; $x++) {
 		$colorHash{$x}{$y} = $color;
 	}
 }
-my ($pos_x, $pos_y) = $position =~ /^(\d+):(\d+)$/;
+my ($pos_x, $pos_y) = $position =~ /^(\-?\d+):(\-?\d+)$/;
 
 my $PP = Pixel->new($server,$port,$forks);
 
