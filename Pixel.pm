@@ -7,6 +7,19 @@ use warnings;
 use Data::Dumper;
 use IO::Socket::INET;
 
+use YAML qw(LoadFile);
+
+my $conf = ".local.conf";
+my $ip_conf;
+my $port_conf;
+
+if (-e $conf) {
+	my $data = LoadFile($conf);
+
+	$ip_conf = $data->{ip};
+	$port_conf = $data->{port};
+}
+
 sub new {
 	my $class = shift;
 	my $self = {};
@@ -14,6 +27,14 @@ sub new {
 
     $self->{'ip'} = shift;
     $self->{'port'} = shift;
+	my $ip = ($self->{'ip'} ? $self->{'ip'} : $ip_conf);
+	my $port = ($self->{'port'} ? $self->{'port'} : $port_conf);
+	
+	$self->{'ip'} = $ip;
+	$self->{'port'} = $port;
+
+	die "no ip:port given!" if !$self->{'ip'} || !$self->{'port'};
+
     $self->{'forks'} = shift || 0;
     $self->{'parent'} = $$;
 	my @forks;
