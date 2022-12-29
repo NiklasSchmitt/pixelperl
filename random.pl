@@ -2,17 +2,26 @@
 
 use strict;
 use warnings;
-
+use Getopt::Long;
 use lib ".";
 use Pixel;
 
-my $server = shift;
-my $port = shift;
-my $forks = shift || 1;
+print "--- random lines ---\nparameters:\n --ip --port --fork\n----------\n";
 
-die "no ip:port given!" if !$server || !$port;
 
-my $PP = Pixel->new($server,$port,$forks);
+my %opts;
+my $break;
+
+GetOptions(
+	"server=s" => \$opts{server},
+	"ip=s" => \$opts{server},
+	"port=i" => \$opts{port},
+	"fork=i" => \$opts{forks},
+);
+
+my $forks = $opts{forks} || 1;
+
+my $PP = Pixel->new($opts{server}, $opts{port}, $forks);
 
 sub Pixel::loop_content {
 	my $self = shift;
@@ -42,8 +51,13 @@ sub Pixel::loop_content {
 		}
 	}
 
-	# sleep();
-	# print STDERR ".";
+	sleep(0.8);
+
+	$break++;
+	if ($break == 1 ) {
+		sleep(int(rand(15)));
+		$break = int(rand(1600)) * -1;
+	}
 
 	return 1;
 }

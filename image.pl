@@ -4,25 +4,33 @@ use strict;
 use warnings;
 use Data::Dumper;
 use GD;
-
+use Getopt::Long;
 use lib ".";
 use Pixel;
 
-my $server = shift;
-my $port = shift;
-my $file = shift;
-my $position = shift || "0:0";
-my $forks = shift || 1;
+print "--- images ---\nparameters:\n --ip --port --fork\n --img=/full/path --position=x:y\n----------\n";
 
-die "no image given!" if !$file;
-die "no ip:port given!" if !$server || !$port;
 
-my $image = GD::Image->new($file);
+my %opts;
 
+GetOptions(
+	"server=s" => \$opts{server},
+	"ip=s" => \$opts{server},
+	"port=i" => \$opts{port},
+	"fork=i" => \$opts{forks},
+	"forks=i" => \$opts{forks},
+	"file=s" => \$opts{file},
+	"img=s" => \$opts{file},
+	"position=s" => \$opts{position},
+);
+
+my $position = $opts{position} || "0:0";
+die "no --file given!" if !$opts{file};
+
+my $image = GD::Image->new($opts{file});
 my $width = $image->width;
 my $height = $image->height;
 my %colorHash;
-
 for (my $x = 0; $x <= $width; $x++) {
 	for (my $y = 0; $y <= $height; $y++) {
 		my $index = $image->getPixel($x, $y);
@@ -33,7 +41,8 @@ for (my $x = 0; $x <= $width; $x++) {
 }
 my ($pos_x, $pos_y) = $position =~ /^(\-?\d+):(\-?\d+)$/;
 
-my $PP = Pixel->new($server,$port,$forks);
+my $forks = $opts{forks} || 1;
+my $PP = Pixel->new($opts{server}, $opts{port}, $forks);
 
 sub Pixel::loop_content {
 	my $self = shift;
