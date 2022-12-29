@@ -13,6 +13,7 @@ my $forks = shift || 1;
 die "no ip:port given!" if !$server || !$port;
 
 my $PP = Pixel->new($server,$port,$forks);
+my $break;
 
 sub Pixel::loop_content {
 	my $self = shift;
@@ -42,8 +43,13 @@ sub Pixel::loop_content {
 		}
 	}
 
-	# sleep();
-	# print STDERR ".";
+	sleep(0.8);
+
+	$break++;
+	if ($break == 1 ) {
+		sleep(int(rand(15)));
+		$break = int(rand(1600)) * -1;
+	}
 
 	return 1;
 }
