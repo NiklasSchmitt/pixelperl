@@ -87,4 +87,22 @@ sub rgb2hex {
     return sprintf("%02lx%02lx%02lx", $r, $g, $b);
 }
 
+sub hex2rgb {
+    my ($hex) = @_;
+
+    $hex =~ s/^(\#|Ox)//;
+
+    $_ = $hex;
+    my ($r, $g, $b) = m/(\w{2})(\w{2})(\w{2})/;
+
+    my @rgb = ();
+    $rgb[0] = CORE::hex($r);
+    $rgb[1] = CORE::hex($g);
+    $rgb[2] = CORE::hex($b);
+
+    # return join (',', @rgb);
+
+    return @rgb;
+}
+
 1;
