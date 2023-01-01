@@ -17,13 +17,13 @@ GetOptions(
 	"port=i" => \$opts{port},
 	"fork=i" => \$opts{forks},
 	"forks=i" => \$opts{forks},
-	"color1=i" => \$opts{color1},
-	"color2=i" => \$opts{color2},
+	"color1=s" => \$opts{color1},
+	"color2=s" => \$opts{color2},
 );
 
 
 my $color1 = $opts{color1} || "000000";
-my $color2 = $opts{color1} || "5b8a21";
+my $color2 = $opts{color2} || "025e1b";
 
 my $switch = 1;
 my $mod = 30;
