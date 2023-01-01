@@ -25,7 +25,7 @@ GetOptions(
 );
 
 my $position = $opts{position} || "0:0";
-die "no --file given!" if !$opts{file};
+die "no --img given!" if !$opts{file};
 
 my $image = GD::Image->new($opts{file});
 my $width = $image->width;
